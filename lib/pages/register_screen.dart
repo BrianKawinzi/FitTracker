@@ -5,79 +5,55 @@ import 'package:fitness_tracker/components/square_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  RegisterScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  //text editing controller
+  //controllers
+  final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  void wrongEmailMessage() {
-      showDialog(
-        context: context, 
-        builder: (context) {
-          return const AlertDialog(
-            title: Text('Incorrect Email'),
-          );
-        },
-      );
-    }
+  //firebase authentication instance
+  final _auth = FirebaseAuth.instance;
 
-    void wrongPasswordMessage() {
-      showDialog(
-        context: context, 
-        builder: (context) {
-          return const AlertDialog(
-            title: Text('Incorrect Password'),
-          );
-        },
-      );
-    }
-
-  //sign user in method
-  void signUserIn() async {
-
-    //sign in functionality
-    try{
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //sign up method
+  void SignUserUp(BuildContext context) async {
+    try {
+      final newUser = await _auth.createUserWithEmailAndPassword(
         email: emailController.text, 
-        password: passwordController.text
+        password: passwordController.text,
       );
-    } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-      if (e.code == 'user-not-found') {
-        //show error to user
-        wrongEmailMessage();
-      }
-      else if (e.code == 'wrong-password') {
 
-        wrongPasswordMessage();
+      if (newUser != null) {
+        Navigator.of(context).pushNamed('/login');
       }
-
-      
+    } catch (e) {
+      if (e is FirebaseAuthException) {
+        showDialog(context: context, 
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Registration Error'),
+          );
+        },
+      );
+      }
     }
-
-    
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      backgroundColor: Colors.grey[300],
+        backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               children: [
 
-                //welcome back you've been missed
+                //welcome to hotelHubb
                 Text(
-                  'Welcome back you\'ve been missed',
+                  'Welcome to FitTracker!',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 20,
@@ -86,10 +62,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 25),
 
+                //username textfield
+               
+
+                const SizedBox(height: 10),
+
                 //email textfield
+
                 normalTF(
                   controller: emailController, 
-                  hintText: 'Enter your email', 
+                  hintText: 'Email', 
                   obscureText: false
                 ),
 
@@ -98,20 +80,30 @@ class _LoginScreenState extends State<LoginScreen> {
                 //password textfield
                 PasswordTf(
                   controller: passwordController, 
-                  hintText: 'Enter your Password'
+                  hintText: 'Password'
                 ),
 
-                 const SizedBox(height: 25),
+                const SizedBox(height: 10),
 
-                //login button
+                //confirm password textfield
+                PasswordTf(
+                  controller: confirmPasswordController, 
+                  hintText: 'Confirm Password'
+                ),
+
+                const SizedBox(height: 20),
+
+                //register button
                 MyButton(
-                  onTap: signUserIn, 
-                  buttonText: "Login"
+                  onTap: () {
+                    SignUserUp(context);
+                  }, 
+                  buttonText: "Agree and Register"
                 ),
 
                 const SizedBox(height: 50),
 
-                //or continue with
+                //or Sign Up with
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Row(
@@ -125,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          'Or continue with',
+                          'Or Sign Up with',
                           style: TextStyle(color: Colors.grey[700]),
                         ),
                       ),
@@ -144,46 +136,47 @@ class _LoginScreenState extends State<LoginScreen> {
                 //google or apple sign in buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-
-                    //google button
+                  children: const[
+                    //google buttons
                     SquareTile(imagepath: 'lib/assets/google.png'),
 
                     SizedBox(width: 25),
 
                     //apple button
-                    SquareTile(imagepath: 'lib/assets/apple.png'),
-
+                    SquareTile(imagepath: 'lib/assets/apple.png')
                   ],
                 ),
 
                 const SizedBox(height: 10),
 
-
-                //not a member register now
+                //Already a member login
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Don\'t have an account?',
+                      'Already a Member?',
                       style: TextStyle(color: Colors.grey[700]),
                     ),
 
-                    const SizedBox(width: 2),
+                    const SizedBox(width: 4),
 
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/register');
-                      }, 
-                      child: const Text(
-                        'Register now',
-                        style: TextStyle(
-                          color: Colors.purple,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ))
+                        Navigator.of(context).pushNamed('/login');
+                      },
+                      child: Text(
+                      'Login now',
+                      style: TextStyle(
+                        color: Colors.purple,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    ),
+
+                    
                   ],
                 )
+
               ],
             ),
           ),
