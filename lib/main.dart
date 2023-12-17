@@ -1,4 +1,5 @@
 import 'package:fitness_tracker/pages/auth_screen.dart';
+import 'package:fitness_tracker/pages/home_screen.dart';
 import 'package:fitness_tracker/pages/login_screen.dart';
 import 'package:fitness_tracker/pages/register_screen.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +22,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'FitTracker',
-      initialRoute: '/login',
+      initialRoute: '/auth',
       routes: {
         '/login':(context) => LoginScreen(),
         '/register':(context) => RegisterScreen(),
+        '/home':(context) => HomeScreen(),
+        '/auth':(context) => AuthScreen()
       },
     );
   }

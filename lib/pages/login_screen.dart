@@ -48,8 +48,11 @@ class _LoginScreenState extends State<LoginScreen> {
         email: emailController.text, 
         password: passwordController.text
       );
+
+      //Navigate to home screen 
+      Navigator.pushReplacementNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
+     
       if (e.code == 'user-not-found') {
         //show error to user
         wrongEmailMessage();
