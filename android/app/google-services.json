@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "815759700050",
+    "project_id": "fitness-tracker-80dc3",
+    "storage_bucket": "fitness-tracker-80dc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815759700050:android:36063e23db18bc5470ef8b",
+        "android_client_info": {
+          "package_name": "com.example.fitness_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO8Z1WmdI2oQngUylPyJRozI4cpkuy2QI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
